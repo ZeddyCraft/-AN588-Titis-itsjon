@@ -1,0 +1,61 @@
+---
+title: "itsjon_OriginalHomeworkCode_02"
+author: "Jonathan Zhang"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Set Up
+
+```{r}
+mean_calls <- 15
+```
+
+## Questions
+
+# What is the probability that she will hear more than 8 calls during any given session?
+
+```{r}
+p_more_than_8 <- 1 - ppois(8, mean_calls)
+cat("P(X > 8):", round(p_more_than_8, 4), "\n")
+```
+
+# What is the probability that she will hear no calls in a session?
+```{r}
+p_zero_calls <- dpois(0, mean_calls)
+cat("P(X = 0):", round(p_zero_calls, 4), "\n")
+```
+
+# What is the probability that she will hear exactly 3 calls in a session?
+```{r}
+p_three_calls <- dpois(3, mean_calls)
+cat("P(X = 3):", round(p_three_calls, 4), "\n")
+```
+
+# Plot the relevant Poisson mass function over the values in range 0 ≤ x ≤ 30.
+```{r}
+x_values <- 0:30
+plot_mass_values <- dpois(x_values, mean_calls)
+plot(x_values, plot_mass_values, type = "h", lwd = 2, col = "blue",
+main = "Poisson Probability Mass Function (mean_calls = 15)",
+xlab = "Number of Calls", ylab = "Probability")
+points(x_values, plot_mass_values, pch = 16, col = "black")
+```
+
+#Simulate 104 results from this distribution (i.e., 2 years of Saturday monitoring sessions).
+```{r}
+set.seed(42)
+two_years_data <- rpois(104, mean_calls)
+```
+
+#Plot the simulated results using hist() and use xlim() to set the horizontal limits to be from 0 to 30. How does your histogram compare to the shape of the probability mass function you plotted above?
+```{r}
+hist(two_years_data, breaks = 30, freq = FALSE, col = "red",
+main = "Simulated Poisson Distribution (104 sessions)",
+xlab = "Number of Calls", xlim = c(0, 30))
+lines(x_values, plot_mass_values, type = "b", col = "black", lwd = 2, pch = 16)
+```
